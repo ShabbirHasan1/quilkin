@@ -592,7 +592,12 @@ impl IoUringLoop {
                     tokens,
                 };
 
-                loop_ctx.enqueue_recv(buffer_pool.clone().alloc());
+                // Queue a number of recv's to hopefully reduce the number of
+                // syscalls between data.
+                for _ in 0..(num_cpus::get() * 32) {
+                    loop_ctx.enqueue_recv(buffer_pool.clone().alloc());
+                }
+
                 loop_ctx
                     .push_with_token(pending_sends_event.io_uring_entry(), Token::PendingsSends);
                 loop_ctx.push_with_token(shutdown_event.io_uring_entry(), Token::Shutdown);
