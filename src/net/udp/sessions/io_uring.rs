@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-use crate::components::proxy;
+use crate::net::udp::PipelineError;
 use std::sync::Arc;
 
 static SESSION_COUNTER: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
@@ -25,7 +25,7 @@ impl super::SessionPool {
         raw_socket: socket2::Socket,
         port: u16,
         pending_sends: crate::net::PacketQueue,
-    ) -> Result<(), proxy::PipelineError> {
+    ) -> Result<(), PipelineError> {
         use crate::net::io_uring;
 
         let pool = self;

@@ -1,9 +1,8 @@
-# Control Plane Relay
+# rDS: Relay Discovery Service
 
-| services | ports | Protocol           |
-|----------|-------|--------------------|
-| ADS      | 7800  | gRPC(IPv4 OR IPv6) |
-| CPDS     | 7900  | gRPC(IPv4 OR IPv6) |
+| ports | Protocol           |
+|-------|--------------------|
+| 7900  | gRPC(IPv4 OR IPv6) |
 
 > **Note:** This service is currently in active experimentation and development
   so there may be bugs which cause it to be unusable  for production, as always

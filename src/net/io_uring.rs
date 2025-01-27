@@ -22,7 +22,7 @@
 
 use crate::{
     collections::PoolBuffer,
-    components::proxy::{self, PipelineError},
+    net::udp::{self, PipelineError},
     metrics,
     net::{packet::queue::SendPacket, PacketQueue},
     time::UtcTimestamp,
@@ -214,12 +214,12 @@ impl LoopPacket {
 pub enum PacketProcessorCtx {
     Router {
         config: Arc<crate::config::Config>,
-        sessions: Arc<proxy::SessionPool>,
+        sessions: Arc<udp::SessionPool>,
         worker_id: usize,
         destinations: Vec<crate::net::EndpointAddress>,
     },
     SessionPool {
-        pool: Arc<proxy::SessionPool>,
+        pool: Arc<udp::SessionPool>,
         port: u16,
     },
 }
@@ -243,7 +243,7 @@ fn process_packet(
             }
             *last_received_at = Some(received_at);
 
-            let ds_packet = proxy::packet_router::DownstreamPacket {
+            let ds_packet = udp::packet_router::DownstreamPacket {
                 contents: packet.buffer,
                 source: packet.source,
             };

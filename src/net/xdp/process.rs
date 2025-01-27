@@ -1,5 +1,5 @@
 use crate::{
-    components::proxy::PipelineError,
+    net::udp::PipelineError,
     filters::{self, Filter as _},
     metrics,
     net::EndpointAddress,

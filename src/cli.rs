@@ -23,30 +23,16 @@ use clap::builder::TypedValueParser;
 use clap::crate_version;
 use tokio::signal;
 
-use crate::{components::admin::Admin, Config};
+use crate::{admin::Admin, Config};
 use strum_macros::{Display, EnumString};
 
 pub use self::{
-    agent::Agent, generate_config_schema::GenerateConfigSchema, manage::Manage, proxy::Proxy,
-    qcmp::Qcmp, relay::Relay, service::Service,
+    generate_config_schema::GenerateConfigSchema,
+    qcmp::Qcmp, service::Service,
 };
 
-macro_rules! define_port {
-    ($port:expr) => {
-        pub const PORT: u16 = $port;
-
-        pub fn default_port() -> u16 {
-            PORT
-        }
-    };
-}
-
-pub mod agent;
 pub mod generate_config_schema;
-pub mod manage;
-pub mod proxy;
 pub mod qcmp;
-pub mod relay;
 mod service;
 
 const ETC_CONFIG_PATH: &str = "/etc/quilkin/quilkin.yaml";
@@ -74,6 +60,10 @@ pub struct AdminCli {
 #[derive(Debug, clap::Parser)]
 #[command(next_help_heading = "Locality Options")]
 pub struct LocalityCli {
+    /// The `region` to set in the cluster map for any provider
+    /// endpoints discovered.
+    #[clap(long = "locality.icao", env = "QUILKIN_LOCALITY_ICAO", default_value_t = crate::config::IcaoCode::default())]
+    pub icao_code: crate::config::IcaoCode,
     /// The `region` to set in the cluster map for any provider
     /// endpoints discovered.
     #[clap(long = "locality.region", env = "QUILKIN_LOCALITY_REGION")]
@@ -110,7 +100,7 @@ pub struct Cli {
     #[clap(short, long, env)]
     pub quiet: bool,
     #[clap(subcommand)]
-    pub command: Commands,
+    pub command: Option<Commands>,
     #[clap(
      long,
      default_value_t = LogFormats::Auto,
@@ -143,13 +133,9 @@ pub enum LogFormats {
 /// The various Quilkin commands.
 #[derive(Clone, Debug, clap::Subcommand)]
 pub enum Commands {
-    Agent(Agent),
     GenerateConfigSchema(GenerateConfigSchema),
-    Manage(Manage),
     #[clap(subcommand)]
     Qcmp(Qcmp),
-    Proxy(Proxy),
-    Relay(Relay),
 }
 
 impl Cli {
@@ -189,76 +175,20 @@ impl Cli {
 
         // Non-long running commands (e.g. ones with no administration server)
         // are executed here.
-        use crate::components::{self, admin as admin_server};
-        let mode = match &self.command {
-            Commands::Qcmp(Qcmp::Ping(ping)) => return ping.run().await,
-            Commands::GenerateConfigSchema(generator) => {
+        match &self.command {
+            Some(Commands::Qcmp(Qcmp::Ping(ping))) => return ping.run().await,
+            Some(Commands::GenerateConfigSchema(generator)) => {
                 return generator.generate_config_schema();
             }
-            Commands::Agent(_) => Admin::Agent(<_>::default()),
-            Commands::Proxy(proxy) => {
-                let ready = components::proxy::Ready {
-                    idle_request_interval: proxy
-                        .idle_request_interval_secs
-                        .map(std::time::Duration::from_secs)
-                        .unwrap_or(admin_server::IDLE_REQUEST_INTERVAL),
-                    ..Default::default()
-                };
-                Admin::Proxy(ready)
-            }
-            Commands::Manage(_mng) => {
-                let ready = components::manage::Ready {
-                    is_manage: true,
-                    ..Default::default()
-                };
-                Admin::Manage(ready)
-            }
-            Commands::Relay(relay) => {
-                let ready = components::relay::Ready {
-                    idle_request_interval: relay
-                        .idle_request_interval_secs
-                        .map(std::time::Duration::from_secs)
-                        .unwrap_or(admin_server::IDLE_REQUEST_INTERVAL),
-                    ..Default::default()
-                };
-                Admin::Relay(ready)
-            }
-        };
+            None => {}
+        }
 
         tracing::debug!(cli = ?self, "config parameters");
+        let config = Config::default();
 
-        let config = Arc::new(match Self::read_config(self.config)? {
-            Some(mut config) => {
-                // Workaround deficiency in serde flatten + untagged
-                if matches!(self.command, Commands::Agent(..)) {
-                    config.datacenter = match config.datacenter {
-                        crate::config::DatacenterConfig::Agent {
-                            icao_code,
-                            qcmp_port,
-                        } => crate::config::DatacenterConfig::Agent {
-                            icao_code,
-                            qcmp_port,
-                        },
-                        crate::config::DatacenterConfig::NonAgent { datacenters } => {
-                            eyre::ensure!(datacenters.read().is_empty(), "starting an agent, but the configuration file has `datacenters` set");
-                            crate::config::DatacenterConfig::Agent {
-                                icao_code: crate::config::Slot::new(
-                                    crate::config::IcaoCode::default(),
-                                ),
-                                qcmp_port: crate::config::Slot::new(0),
-                            }
-                        }
-                    };
-                }
-
-                config
-            }
-            None if matches!(self.command, Commands::Agent(..)) => Config::default_agent(),
-            None => Config::default_non_agent(),
-        });
-
+        let readiness_check = std::sync::Arc::<std::sync::atomic::AtomicBool>::default();
         if self.admin.enabled {
-            mode.server(config.clone(), self.admin.address);
+            crate::admin::Admin::new(readiness_check.clone()).server(config.clone(), self.admin.address);
         }
 
         let locality = self.locality.region.map(|region| {
@@ -297,7 +227,7 @@ impl Cli {
             shutdown_tx.send(crate::ShutdownKind::Normal).ok();
         });
 
-        self.service.spawn_services(&config, &shutdown_rx)?;
+        self.service.spawn_services(&config, &shutdown_rx, readiness_check)?;
 
         match (self.command, mode) {
             (Commands::Agent(agent), Admin::Agent(ready)) => {

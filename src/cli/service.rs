@@ -1,6 +1,6 @@
 use std::{future::Future, sync::Arc};
 
-use crate::{components::proxy::SessionPool, config::Config};
+use crate::{net::udp::SessionPool, config::Config};
 
 #[derive(Debug, clap::Parser)]
 #[command(next_help_heading = "Service Options")]
@@ -80,6 +80,8 @@ pub struct Service {
         default_value_t = 7800
     )]
     xds_port: u16,
+
+
 }
 
 impl Default for Service {
@@ -169,6 +171,7 @@ impl Service {
         self,
         config: &Arc<Config>,
         shutdown_rx: &crate::ShutdownRx,
+        readiness_check: Arc<std::sync::atomic::AtomicBool>,
     ) -> crate::Result<tokio::task::JoinHandle<crate::Result<()>>> {
         let shutdown_rx = shutdown_rx.clone();
         let config = config.clone();
@@ -179,6 +182,7 @@ impl Service {
             let (udp_task, finalizer) = self.publish_udp(&config)?;
             let xds_task = self.publish_xds(&config)?;
 
+            readiness_check.store(true, std::sync::atomic::Ordering::SeqCst);
             let result = tokio::select! {
                 result = mds_task => result,
                 result = phoenix_task => result,
@@ -186,6 +190,7 @@ impl Service {
                 result = udp_task => result,
                 result = xds_task => result,
             };
+            readiness_check.store(false, std::sync::atomic::Ordering::SeqCst);
 
             if let Some(finalizer) = finalizer {
                 (finalizer)(shutdown_rx.clone());
@@ -244,7 +249,7 @@ impl Service {
             tokio::spawn(
                 crate::net::xds::server::ControlPlane::from_arc(
                     config.clone(),
-                    crate::components::admin::IDLE_REQUEST_INTERVAL,
+                    crate::admin::IDLE_REQUEST_INTERVAL,
                 )
                 .relay_server(listener)?,
             )
@@ -270,7 +275,7 @@ impl Service {
             tokio::spawn(
                 crate::net::xds::server::ControlPlane::from_arc(
                     config.clone(),
-                    crate::components::admin::IDLE_REQUEST_INTERVAL,
+                    crate::admin::IDLE_REQUEST_INTERVAL,
                 )
                 .management_server(listener)?,
             )
@@ -338,7 +343,7 @@ impl Service {
 
         let sessions = SessionPool::new(config.clone(), session_sends, buffer_pool.clone());
 
-        crate::components::proxy::packet_router::spawn_receivers(
+        crate::net::udp::packet_router::spawn_receivers(
             config,
             socket,
             worker_sends,

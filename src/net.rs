@@ -62,6 +62,7 @@ macro_rules! uring_span {
     }};
 }
 
+pub mod udp;
 pub mod cluster;
 pub mod endpoint;
 pub(crate) mod maxmind_db;
@@ -94,6 +95,11 @@ pub use self::{
 };
 
 pub use self::packet::{queue, PacketQueue, PacketQueueSender};
+
+#[inline]
+pub fn random_port() -> std::io::Result<u16> {
+    raw_socket_with_reuse(0).map(|socket| socket.port)
+}
 
 fn socket_with_reuse_and_address(addr: SocketAddr) -> std::io::Result<UdpSocket> {
     cfg_if::cfg_if! {

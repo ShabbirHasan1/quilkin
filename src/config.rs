@@ -935,6 +935,22 @@ pub enum AddrKind {
     Any,
 }
 
+impl clap::ValueEnum for AddrKind {
+    fn value_variants<'a>() -> &'a [Self] {
+        &[Self::Ipv4, Self::Ipv6, Self::Any]
+    }
+
+    fn to_possible_value(&self) -> Option<clap::builder::PossibleValue> {
+        use clap::builder::PossibleValue as pv;
+        Some(match self {
+            Self::Ipv4 => pv::new("v4"),
+            Self::Ipv6 => pv::new("v6"),
+            Self::Any => pv::new("any"),
+        })
+    }
+}
+
+
 #[cfg(test)]
 mod tests {
     use std::net::Ipv6Addr;

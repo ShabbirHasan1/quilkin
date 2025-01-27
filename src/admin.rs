@@ -16,8 +16,7 @@
 
 mod health;
 
-use std::sync::Arc;
-use std::time::Duration;
+use std::{sync::{atomic::{AtomicBool, Ordering}, Arc}, time::Duration};
 
 use bytes::Bytes;
 use http_body_util::Full;
@@ -27,29 +26,24 @@ type Body = Full<Bytes>;
 use crate::config::Config;
 use health::Health;
 
-use super::{agent, manage, proxy, relay};
-
 pub const PORT: u16 = 8000;
 
 pub(crate) const IDLE_REQUEST_INTERVAL: Duration = Duration::from_secs(30);
 
 /// The runtime mode of Quilkin, which contains various runtime configurations
 /// specific to a mode.
-#[derive(Clone, Debug)]
-pub enum Admin {
-    Proxy(proxy::Ready),
-    Relay(relay::Ready),
-    Manage(manage::Ready),
-    Agent(agent::Ready),
+#[derive(Clone, Debug, Default)]
+pub struct Admin {
+    readiness_check: Arc<AtomicBool>,
 }
 
 impl Admin {
+    pub fn new(readiness_check: Arc<AtomicBool>) -> Self {
+        Self { readiness_check }
+    }
+
     pub fn idle_request_interval(&self) -> Duration {
-        match self {
-            Self::Proxy(config) => config.idle_request_interval,
-            Self::Relay(config) => config.idle_request_interval,
-            _ => IDLE_REQUEST_INTERVAL,
-        }
+        IDLE_REQUEST_INTERVAL
     }
 
     pub fn server(
@@ -114,15 +108,8 @@ impl Admin {
             .expect("failed to spawn admin-http thread")
     }
 
-    fn is_ready(&self, config: &Config) -> bool {
-        match &self {
-            Self::Proxy(proxy) => proxy
-                .is_ready()
-                .unwrap_or_else(|| config.clusters.read().has_endpoints()),
-            Self::Agent(agent) => agent.is_ready(),
-            Self::Manage(manage) => manage.is_ready(),
-            Self::Relay(relay) => relay.is_ready(),
-        }
+    fn is_ready(&self) -> bool {
+        self.readiness_checks.read().iter().all(|item| item.load(Ordering::SeqCst))
     }
 
     async fn handle_request(
@@ -154,7 +141,7 @@ impl Admin {
                     }
                 }
             }
-            (&Method::GET, "/ready" | "/readyz") => check_readiness(|| self.is_ready(&config)),
+            (&Method::GET, "/ready" | "/readyz") => check_readiness(|| self.is_ready()),
             (&Method::GET, "/config") => match serde_json::to_string(&config) {
                 Ok(body) => Response::builder()
                     .status(StatusCode::OK)

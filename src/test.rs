@@ -285,47 +285,30 @@ impl TestHelper {
     pub async fn run_server(
         &mut self,
         config: Arc<Config>,
-        server: Option<crate::components::proxy::Proxy>,
+        server: Option<crate::net::udp::Proxy>,
         with_admin: Option<Option<SocketAddr>>,
     ) -> u16 {
         let (shutdown_tx, shutdown_rx) = crate::make_shutdown_channel(crate::ShutdownKind::Testing);
         self.server_shutdown_tx.push(Some(shutdown_tx));
         let mode = crate::components::admin::Admin::Proxy(<_>::default());
 
+        let readiness_check = <_>::default();
         if let Some(address) = with_admin {
-            mode.server(config.clone(), address);
+            crate::admin::Admin::new(readiness_check.clone())
+                .server(config.clone(), address);
         }
 
         let server = server.unwrap_or_else(|| {
-            let qcmp = crate::net::raw_socket_with_reuse(0).unwrap();
-            let phoenix = crate::net::TcpListener::bind(None).unwrap();
-
-            crate::components::proxy::Proxy {
-                num_workers: std::num::NonZeroUsize::new(1).unwrap(),
-                socket: Some(crate::net::raw_socket_with_reuse(0).unwrap()),
-                qcmp,
-                phoenix,
-                ..Default::default()
-            }
+            let port = crate::net::random_port().unwrap();
+            crate::cli::Service::default()
+                .udp()
+                .udp_port(port)
         });
 
         let (prox_tx, prox_rx) = tokio::sync::oneshot::channel();
 
-        let port = crate::net::socket_port(server.socket.as_ref().unwrap());
-
-        tokio::spawn(async move {
-            server
-                .run(
-                    crate::components::RunArgs {
-                        config,
-                        ready: Default::default(),
-                        shutdown_rx,
-                    },
-                    Some(prox_tx),
-                )
-                .await
-                .unwrap();
-        });
+        let port = server.udp_port;
+        server.spawn_services(&config, &shutdown_rx, readiness_check).unwrap();
 
         prox_rx.await.unwrap();
         port

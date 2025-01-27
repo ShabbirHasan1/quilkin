@@ -11,37 +11,49 @@
 
 # Services
 
-- [Proxy](./services/proxy.md)
-    - [Configuration File](./services/proxy/configuration.md)
-    - [Filters](./services/proxy/filters.md)
-        - [Capture](./services/proxy/filters/capture.md)
-        - [Compress](./services/proxy/filters/compress.md)
-        - [Concatenate](./services/proxy/filters/concatenate.md)
-        - [Debug](./services/proxy/filters/debug.md)
-        - [Drop](./services/proxy/filters/drop.md)
-        - [Firewall](./services/proxy/filters/firewall.md)
-        - [Load Balancer](./services/proxy/filters/load_balancer.md)
-        - [Local Rate Limit](./services/proxy/filters/local_rate_limit.md)
-        - [Match](./services/proxy/filters/match.md)
-        - [Pass](./services/proxy/filters/pass.md)
-        - [Timestamp](./services/proxy/filters/timestamp.md)
-        - [Token Router](./services/proxy/filters/token_router.md)
-    - [Control Message Protocol](./services/proxy/qcmp.md)
-    - [Metrics](./services/proxy/metrics.md)
+- [UDP](./services/udp.md)
+    - [Filters](./services/udp/filters.md)
+        - [Capture](./services/udp/filters/capture.md)
+        - [Compress](./services/udp/filters/compress.md)
+        - [Concatenate](./services/udp/filters/concatenate.md)
+        - [Debug](./services/udp/filters/debug.md)
+        - [Drop](./services/udp/filters/drop.md)
+        - [Firewall](./services/udp/filters/firewall.md)
+        - [Load Balancer](./services/udp/filters/load_balancer.md)
+        - [Local Rate Limit](./services/udp/filters/local_rate_limit.md)
+        - [Match](./services/udp/filters/match.md)
+        - [Pass](./services/udp/filters/pass.md)
+        - [Timestamp](./services/udp/filters/timestamp.md)
+        - [Token Router](./services/udp/filters/token_router.md)
+    - [Metrics](./services/udp/metrics.md)
 
 ---
 
-- [Control Plane](./services/xds.md)
+- [QCMP](./services/qcmp.md)
+
+---
+
+- [xDS](./services/xds.md)
     - [Metrics](./services/xds/metrics.md)
     - [Providers]()
         - [Agones](./services/xds/providers/agones.md)
         - [Filesystem](./services/xds/providers/filesystem.md)
     - [Protobuf Reference](./services/xds/proto/index.md)
+
 ---
 
-- [Relay](./services/relay.md)
+- [rDS](./services/rds.md)
     - [Metrics]()
-    - [Agents](./services/agent.md)
+
+---
+
+- [HTTP](./services/http.md)
+
+# Configuration
+
+- [Configuration File](./services/udp/configuration.md)
+
+## Providers
 
 # SDKs
 

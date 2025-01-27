@@ -16,6 +16,7 @@
 
 #![deny(unused_must_use)]
 
+mod admin;
 pub mod alloc;
 pub mod collections;
 pub(crate) mod metrics;
@@ -27,7 +28,6 @@ pub mod net;
 
 pub mod cli;
 pub mod codec;
-pub mod components;
 pub mod config;
 pub mod filters;
 pub mod xds;
@@ -41,7 +41,7 @@ pub type Result<T, E = eyre::Error> = std::result::Result<T, E>;
 
 #[doc(inline)]
 pub use self::{
-    cli::{Cli, Proxy},
+    cli::Cli,
     config::Config,
 };
 

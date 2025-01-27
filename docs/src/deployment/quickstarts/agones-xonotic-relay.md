@@ -10,8 +10,8 @@ In this quickstart, we'll be setting up an example multi-cluster
 only be accessible through Quilkin, via utilising the [TokenRouter] Filter to
 provide routing and access control to the Allocated `GameServer` instances.
 
-To do this, we'll take advantage of the Quilkin [Relay](../../services/relay.md) to provide 
-an out-of-the-box multi-cluster xDS control plane, and the [Agones Agent](../../services/agent.md)
+To do this, we'll take advantage of the Quilkin [mDS](../../services/mds.md) and
+to [xDS](../../services/mds.md) services to provide an out-of-the-box multi-cluster xDS control plane, and the [mDS client](../../services/agent.md)
 to send information from the cluster(s) to the relay, which can be used as a
 management server for each of the Quilkin [Proxy](../../services/proxy.md) instances.
 

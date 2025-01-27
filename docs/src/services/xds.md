@@ -1,10 +1,18 @@
-# xDS Control Plane
+# xDS: Resource Discovery Service
 
 | services | ports | Protocol            |
 |----------|-------|---------------------|
 | xDS      | 7800  | gRPC (IPv4 OR IPv6) |
 
-For single-cluster integration, Quilkin provides a `manage` service, that can be
+Spawns a **xDS** server which allows exposes a gRPC service using the xDS
+protocol to share its configuration with other quilkin services. You can
+populate the configuration to share through a number of [config providers].
+
+[config providers]: 
+
+
+
+, Quilkin provides a `manage` service, that can be
 used with a number of configuration discovery providers to provide cluster
 configuration multiple [`proxy`s](./proxy.md). With each provider automating the
 complexity of a full xDS management control plane via integrations with popular

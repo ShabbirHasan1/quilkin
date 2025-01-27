@@ -1,19 +1,13 @@
-# Proxy
+# UDP
 
-| Services | Ports | Protocol           |
-|----------|-------|--------------------|
-| Proxy    | 7777  | UDP (IPv4 OR IPv6) |
-| QCMP     | 7600  | UDP (IPv4 OR IPv6) |
+| Ports | Protocol           |
+|-------|--------------------|
+| 7777  | UDP (IPv4 OR IPv6) |
 
-"Proxy" is the primary Quilkin service, which acts as a non-transparent UDP
-proxy.
-
-To view all the options for the `proxy` subcommand, run:
-
-```shell
-$ quilkin proxy --help
-{{#include ../../../target/quilkin.proxy.commands}}
-```
+Spawns a **UDP** server that accepts UDP packets on the port specified, acting
+as a non-transparent UDP proxy. This can further be configured by specifying
+a [filter chain][#filter-chains] to validate, transform, and route packets. By
+default the UDP service forwards all packets to all endpoints.
 
 ## Endpoints
 
@@ -25,7 +19,7 @@ It is represented by an IP address and port. An Endpoint can optionally be assoc
 
 ## Proxy Filters
 
-Filters are the way for a Quilkin proxy to intercept UDP packet traffic from the
+Filters are the way for Quilkin to intercept UDP packet traffic from the
 source and [Endpoints][Endpoint] in either direction, and be able to inspect,
 manipulate, and route the packets as desired.
 
@@ -68,7 +62,7 @@ An endpoint's metadata can be specified alongside the endpoint in [static config
 
 A session represents ongoing communication flow between a client on a [Local Port] and an [Endpoint].
 
-Quilkin uses the "Session" concept to track traffic flowing through the proxy between any client-server pair. A
+Quilkin uses the "Session" concept to track traffic flowing through Quilkin between any client-server pair. A
 Session serves the same purpose, and can be thought of as a lightweight version of a `TCP` session in that, while a
 TCP session requires a protocol to establish and teardown:
 
@@ -86,8 +80,8 @@ the [filter chain][Filters], so a Session can only be created after filter chain
 filter chain drops all packets, then no session will ever be created.
 
 [Endpoint]: #endpoints
-[file-configuration]: ./proxy/configuration.md
+[file-configuration]: ./udp/configuration.md
 [xds-endpoint-metadata]: https://www.envoyproxy.io/docs/envoy/latest/api-v3/config/endpoint/v3/endpoint_components.proto#envoy-v3-api-field-config-endpoint-v3-lbendpoint-metadata
 [dynamic-configuration-doc]: ./xds.md
-[TokenRouter]: ./proxy/filters/token_router.md
-[Filters]: ./proxy/filters.md
+[TokenRouter]: ./udp/filters/token_router.md
+[Filters]: ./udp/filters.md

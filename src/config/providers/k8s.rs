@@ -26,6 +26,29 @@ use agones::GameServer;
 
 use crate::net::endpoint::Locality;
 
+fn events<T>(
+    client: kube::Client,
+    namespace: impl AsRef<str>,
+) -> impl Stream<Item = Result<Event<DeserializeGuard<T>>, kube::runtime::watcher::Error>>
+{
+    let gameservers_namespace = namespace.as_ref();
+    let gameservers: kube::Api<DeserializeGuard<T>> =
+        kube::Api::namespaced(client, gameservers_namespace);
+    let gs_writer =
+        kube::runtime::reflector::store::Writer::<DeserializeGuard<T>>::default();
+    let mut config = kube::runtime::watcher::Config::default()
+        // Default timeout is 5 minutes, far too slow for us to react.
+        .timeout(15)
+        // Use `Any` as we care about speed more than consistency.
+        .any_semantic();
+
+    // Retreive unbounded results.
+    config.page_size = None;
+
+    let gameserver_stream = kube::runtime::watcher(gameservers, config);
+    kube::runtime::reflector(gs_writer, gameserver_stream)
+}
+
 pub fn update_filters_from_configmap(
     client: kube::Client,
     namespace: impl AsRef<str>,
