@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/test.rs`."><title>test.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="quilkin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0 (9fc6b4312 2025-01-07)" data-channel="1.84.0" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">quilkin/</div>test.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/test.rs`."><title>test.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="quilkin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../static.files/storage-59e33391.js"></script><script defer src="../../static.files/src-script-56102188.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">quilkin/</div>test.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -536,7 +536,28 @@
 <a href="#535" id="535">535</a>
 <a href="#536" id="536">536</a>
 <a href="#537" id="537">537</a>
-<a href="#538" id="538">538</a></pre></div><pre class="rust"><code><span class="comment">/*
+<a href="#538" id="538">538</a>
+<a href="#539" id="539">539</a>
+<a href="#540" id="540">540</a>
+<a href="#541" id="541">541</a>
+<a href="#542" id="542">542</a>
+<a href="#543" id="543">543</a>
+<a href="#544" id="544">544</a>
+<a href="#545" id="545">545</a>
+<a href="#546" id="546">546</a>
+<a href="#547" id="547">547</a>
+<a href="#548" id="548">548</a>
+<a href="#549" id="549">549</a>
+<a href="#550" id="550">550</a>
+<a href="#551" id="551">551</a>
+<a href="#552" id="552">552</a>
+<a href="#553" id="553">553</a>
+<a href="#554" id="554">554</a>
+<a href="#555" id="555">555</a>
+<a href="#556" id="556">556</a>
+<a href="#557" id="557">557</a>
+<a href="#558" id="558">558</a>
+<a href="#559" id="559">559</a></pre></div><pre class="rust"><code><span class="comment">/*
  * Copyright 2020 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -562,11 +583,11 @@
 <span class="kw">use crate</span>::{
     collections::BufferPool,
     config::Config,
-    filters::{prelude::<span class="kw-2">*</span>, FilterRegistry},
+    filters::{FilterRegistry, prelude::<span class="kw-2">*</span>},
+    net::DualStackEpollSocket <span class="kw">as </span>DualStackLocalSocket,
     net::endpoint::metadata::Value,
     net::endpoint::{Endpoint, EndpointAddress},
-    net::DualStackEpollSocket <span class="kw">as </span>DualStackLocalSocket,
-    signal::{ShutdownKind, ShutdownRx, ShutdownTx},
+    signal::{ShutdownRx, ShutdownTx},
 };
 
 <span class="kw">static </span>LOG_ONCE: Once = Once::new();
@@ -579,7 +600,7 @@
             .pretty()
             .with_ansi(<span class="bool-val">false</span>)
             .with_env_filter(filter)
-            .init()
+            .init();
     });
 }
 
@@ -636,6 +657,12 @@
 <span class="comment">// TestFilter is useful for testing that commands are executing filters appropriately.
 </span><span class="kw">pub struct </span>TestFilter;
 
+<span class="kw">impl </span>TestFilter {
+    <span class="kw">pub fn </span>testing(_config: <span class="prelude-ty">Option</span>&lt;()&gt;) -&gt; <span class="self">Self </span>{
+        <span class="self">Self
+    </span>}
+}
+
 <span class="kw">impl </span>Filter <span class="kw">for </span>TestFilter {
     <span class="kw">fn </span>read&lt;P: PacketMut&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, ctx: <span class="kw-2">&amp;mut </span>ReadContext&lt;<span class="lifetime">'_</span>, P&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), FilterError&gt; {
         <span class="comment">// append values on each run
@@ -689,20 +716,24 @@
 
 <span class="kw">impl </span>Drop <span class="kw">for </span>TestHelper {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
-        <span class="kw">for </span>shutdown_tx <span class="kw">in </span><span class="self">self</span>.server_shutdown_tx.iter_mut().flat_map(|tx| tx.take()) {
+        <span class="kw">for </span>shutdown_tx <span class="kw">in </span><span class="self">self
+            </span>.server_shutdown_tx
+            .iter_mut()
+            .filter_map(|tx| tx.take())
+        {
             shutdown_tx
-                .send(ShutdownKind::Testing)
+                .send(())
                 .map_err(|error| {
                     <span class="macro">tracing::warn!</span>(
                         %error,
                         <span class="string">"Failed to send server shutdown over channel"
-                    </span>)
+                    </span>);
                 })
                 .ok();
         }
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>((shutdown_tx, <span class="kw">_</span>)) = <span class="self">self</span>.shutdown_ch.take() {
-            shutdown_tx.send(ShutdownKind::Testing).unwrap();
+            shutdown_tx.send(()).unwrap();
         }
     }
 }
@@ -820,19 +851,30 @@
         addr.into()
     }
 
+    <span class="kw">pub fn </span>new_config() -&gt; Arc&lt;Config&gt; {
+        <span class="kw">let </span>providers = <span class="kw">crate</span>::Providers::default();
+        <span class="kw">let </span>service = <span class="kw">crate</span>::Service::builder().udp().qcmp();
+        <span class="kw">crate</span>::Config::new_rc(
+            <span class="prelude-val">Some</span>(<span class="string">"test-server"</span>.into()),
+            Default::default(),
+            <span class="kw-2">&amp;</span>providers,
+            <span class="kw-2">&amp;</span>service,
+            tokio_util::sync::CancellationToken::new(),
+        )
+    }
+
     <span class="kw">pub async fn </span>run_server(
         <span class="kw-2">&amp;mut </span><span class="self">self</span>,
         config: Arc&lt;Config&gt;,
         server: <span class="prelude-ty">Option</span>&lt;<span class="kw">crate</span>::components::proxy::Proxy&gt;,
         with_admin: <span class="prelude-ty">Option</span>&lt;<span class="prelude-ty">Option</span>&lt;SocketAddr&gt;&gt;,
     ) -&gt; u16 {
-        <span class="kw">let </span>(shutdown_tx, shutdown_rx) =
-            <span class="kw">crate</span>::signal::channel(<span class="kw">crate</span>::signal::ShutdownKind::Testing);
-        <span class="self">self</span>.server_shutdown_tx.push(<span class="prelude-val">Some</span>(shutdown_tx));
+        <span class="kw">let </span>(shutdown_tx, shutdown_rx) = <span class="kw">crate</span>::signal::channel();
+        <span class="self">self</span>.server_shutdown_tx.push(<span class="prelude-val">Some</span>(shutdown_tx.clone()));
         <span class="kw">let </span>ready = &lt;<span class="kw">_</span>&gt;::default();
 
         <span class="kw">if let </span><span class="prelude-val">Some</span>(address) = with_admin {
-            <span class="kw">crate</span>::components::admin::server(config.clone(), ready, address);
+            <span class="kw">crate</span>::components::admin::server(config.clone(), ready, shutdown_tx.clone(), address);
         }
 
         <span class="kw">let </span>server = server.unwrap_or_else(|| {
@@ -849,6 +891,7 @@
         });
 
         <span class="kw">let </span>(prox_tx, prox_rx) = tokio::sync::oneshot::channel();
+        <span class="kw">let </span>shutdown = <span class="kw">crate</span>::signal::ShutdownHandler::new(shutdown_tx, shutdown_rx);
 
         <span class="kw">let </span>port = <span class="kw">crate</span>::net::socket_port(server.socket.as_ref().unwrap());
 
@@ -858,12 +901,11 @@
                     <span class="kw">crate</span>::components::RunArgs {
                         config,
                         ready: Default::default(),
-                        shutdown_rx,
+                        shutdown,
                     },
                     <span class="prelude-val">Some</span>(prox_tx),
                 )
-                .<span class="kw">await
-                </span>.unwrap();
+                .unwrap();
         });
 
         prox_rx.<span class="kw">await</span>.unwrap();
@@ -873,14 +915,13 @@
     <span class="doccomment">/// Returns a receiver subscribed to the helper's shutdown event.
     </span><span class="kw">async fn </span>get_shutdown_subscriber(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; ShutdownRx {
         <span class="comment">// If this is the first call, then we set up the channel first.
-        </span><span class="kw">match </span><span class="self">self</span>.shutdown_ch {
-            <span class="prelude-val">Some</span>((<span class="kw">_</span>, <span class="kw-2">ref </span>rx)) =&gt; rx.clone(),
-            <span class="prelude-val">None </span>=&gt; {
-                <span class="kw">let </span>ch = <span class="kw">crate</span>::signal::channel(ShutdownKind::Testing);
-                <span class="kw">let </span>recv = ch.<span class="number">1</span>.clone();
-                <span class="self">self</span>.shutdown_ch = <span class="prelude-val">Some</span>(ch);
-                recv
-            }
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>((<span class="kw">_</span>, rx)) = <span class="kw-2">&amp;</span><span class="self">self</span>.shutdown_ch {
+            rx.clone()
+        } <span class="kw">else </span>{
+            <span class="kw">let </span>ch = <span class="kw">crate</span>::signal::channel();
+            <span class="kw">let </span>recv = ch.<span class="number">1</span>.clone();
+            <span class="self">self</span>.shutdown_ch = <span class="prelude-val">Some</span>(ch);
+            recv
         }
     }
 }
@@ -972,6 +1013,7 @@
         <span class="kw">let </span>config = <span class="self">Self</span>::default();
         config.clusters.insert(
             <span class="prelude-val">None</span>,
+            <span class="prelude-val">None</span>,
             [Endpoint::new((std::net::Ipv4Addr::LOCALHOST, <span class="number">8080</span>).into())].into(),
         );
         config
@@ -983,7 +1025,7 @@
 
         <span class="self">Self </span>{
             filters: <span class="kw">crate</span>::filters::FilterChain::try_create(std::iter::once(
-                <span class="kw">crate</span>::config::Filter {
+                <span class="kw">crate</span>::config::filter::Filter {
                     name: <span class="string">"TestFilter"</span>.into(),
                     label: <span class="prelude-val">None</span>,
                     config: <span class="prelude-val">None</span>,
@@ -1034,7 +1076,7 @@
 /// temporary directory named after the test
 </span><span class="attr">#[macro_export]
 </span><span class="macro">macro_rules!</span> temp_file {
-    (<span class="macro-nonterminal">$prefix</span>:expr) =&gt; {{
+    (<span class="macro-nonterminal">$prefix</span>:expr_2021) =&gt; {{
         <span class="kw">let </span>name = <span class="macro-nonterminal">$</span><span class="macro">crate::__func_name!</span>();
         <span class="kw">let </span><span class="macro-nonterminal">name </span>= name.strip_suffix(<span class="string">"::{{closure}}"</span>).unwrap_or(name);
         <span class="kw">let </span><span class="kw-2">mut </span>name = name.replace(<span class="string">"::"</span>, <span class="string">"."</span>);

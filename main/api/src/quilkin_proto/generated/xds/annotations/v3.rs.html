@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/quilkin-proto/src/generated/xds/annotations/v3.rs`."><title>v3.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="quilkin_proto" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0 (9fc6b4312 2025-01-07)" data-channel="1.84.0" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../../../../static.files/storage-59e33391.js"></script><script defer src="../../../../../static.files/src-script-56102188.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">quilkin_proto/generated/xds/annotations/</div>v3.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `crates/quilkin-proto/src/generated/xds/annotations/v3.rs`."><title>v3.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../../../" data-static-root-path="../../../../../static.files/" data-current-crate="quilkin_proto" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../../../static.files/storage-59e33391.js"></script><script defer src="../../../../../static.files/src-script-56102188.js"></script><script defer src="../../../../../src-files.js"></script><script defer src="../../../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">quilkin_proto/generated/xds/annotations/</div>v3.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -53,29 +53,23 @@
 <a href="#52" id="52">52</a>
 <a href="#53" id="53">53</a>
 <a href="#54" id="54">54</a>
-<a href="#55" id="55">55</a>
-<a href="#56" id="56">56</a>
-<a href="#57" id="57">57</a>
-<a href="#58" id="58">58</a></pre></div><pre class="rust"><code><span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+<a href="#55" id="55">55</a></pre></div><pre class="rust"><code><span class="comment">// This file is @generated by prost-build.
+</span><span class="attr">#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 </span><span class="kw">pub struct </span>FileStatusAnnotation {
     <span class="attr">#[prost(bool, tag = <span class="string">"1"</span>)]
     </span><span class="kw">pub </span>work_in_progress: bool,
 }
-<span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+<span class="attr">#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 </span><span class="kw">pub struct </span>MessageStatusAnnotation {
     <span class="attr">#[prost(bool, tag = <span class="string">"1"</span>)]
     </span><span class="kw">pub </span>work_in_progress: bool,
 }
-<span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+<span class="attr">#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 </span><span class="kw">pub struct </span>FieldStatusAnnotation {
     <span class="attr">#[prost(bool, tag = <span class="string">"1"</span>)]
     </span><span class="kw">pub </span>work_in_progress: bool,
 }
-<span class="attr">#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
+<span class="attr">#[derive(Clone, Copy, PartialEq, Eq, Hash, ::prost::Message)]
 </span><span class="kw">pub struct </span>StatusAnnotation {
     <span class="attr">#[prost(bool, tag = <span class="string">"1"</span>)]
     </span><span class="kw">pub </span>work_in_progress: bool,
@@ -97,10 +91,10 @@
     /// (if the ProtoBuf definition does not change) and safe for programmatic use.
     </span><span class="kw">pub fn </span>as_str_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">'static </span>str {
         <span class="kw">match </span><span class="self">self </span>{
-            PackageVersionStatus::Unknown =&gt; <span class="string">"UNKNOWN"</span>,
-            PackageVersionStatus::Frozen =&gt; <span class="string">"FROZEN"</span>,
-            PackageVersionStatus::Active =&gt; <span class="string">"ACTIVE"</span>,
-            PackageVersionStatus::NextMajorVersionCandidate =&gt; <span class="string">"NEXT_MAJOR_VERSION_CANDIDATE"</span>,
+            <span class="self">Self</span>::Unknown =&gt; <span class="string">"UNKNOWN"</span>,
+            <span class="self">Self</span>::Frozen =&gt; <span class="string">"FROZEN"</span>,
+            <span class="self">Self</span>::Active =&gt; <span class="string">"ACTIVE"</span>,
+            <span class="self">Self</span>::NextMajorVersionCandidate =&gt; <span class="string">"NEXT_MAJOR_VERSION_CANDIDATE"</span>,
         }
     }
     <span class="doccomment">/// Creates an enum from field names used in the ProtoBuf definition.

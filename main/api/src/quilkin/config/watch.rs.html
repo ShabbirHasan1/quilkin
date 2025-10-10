@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/config/watch.rs`."><title>watch.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-42caa33d.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="quilkin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.84.0 (9fc6b4312 2025-01-07)" data-channel="1.84.0" data-search-js="search-92e6798f.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">quilkin/config/</div>watch.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/config/watch.rs`."><title>watch.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../../static.files/rustdoc-46132b98.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="quilkin" data-themes="" data-resource-suffix="" data-rustdoc-version="1.85.0 (4d91de4e4 2025-02-17)" data-channel="1.85.0" data-search-js="search-75f5ac3e.js" data-settings-js="settings-0f613d39.js" ><script src="../../../static.files/storage-59e33391.js"></script><script defer src="../../../static.files/src-script-56102188.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f194d8c.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-044be391.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><h1><div class="sub-heading">quilkin/config/</div>watch.rs</h1><rustdoc-toolbar></rustdoc-toolbar></div><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers">
 <a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
@@ -178,7 +178,9 @@
 <a href="#177" id="177">177</a>
 <a href="#178" id="178">178</a>
 <a href="#179" id="179">179</a>
-<a href="#180" id="180">180</a></pre></div><pre class="rust"><code><span class="comment">/*
+<a href="#180" id="180">180</a>
+<a href="#181" id="181">181</a>
+<a href="#182" id="182">182</a></pre></div><pre class="rust"><code><span class="comment">/*
  * Copyright 2022 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -194,15 +196,11 @@
  * limitations under the License.
  */
 
-</span><span class="kw">pub mod </span>agones;
-<span class="kw">mod </span>fs;
-
-<span class="kw">pub use </span><span class="self">self</span>::{agones::watch <span class="kw">as </span>agones, fs::watch <span class="kw">as </span>fs};
-<span class="kw">use </span>std::sync::Arc;
+</span><span class="kw">use </span>std::{fmt, sync::Arc};
 
 <span class="kw">use </span>tokio::sync::watch;
 
-<span class="attr">#[derive(Clone, Debug)]
+<span class="attr">#[derive(Clone)]
 </span><span class="kw">pub struct </span>Watch&lt;T&gt; {
     value: Arc&lt;T&gt;,
     watchers: Arc&lt;watch::Sender&lt;Arc&lt;T&gt;&gt;&gt;,
@@ -239,14 +237,14 @@
 }
 
 <span class="kw">impl</span>&lt;T: Watchable + std::fmt::Debug&gt; Watch&lt;T&gt; {
-    <span class="kw">pub fn </span>read(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ReadGuard&lt;T&gt; {
+    <span class="kw">pub fn </span>read(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ReadGuard&lt;<span class="lifetime">'_</span>, T&gt; {
         ReadGuard {
             inner: <span class="self">self</span>,
             marker: <span class="self">self</span>.value.mark(),
         }
     }
 
-    <span class="kw">pub fn </span>write(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; WatchGuard&lt;T&gt; {
+    <span class="kw">pub fn </span>write(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; WatchGuard&lt;<span class="lifetime">'_</span>, T&gt; {
         WatchGuard {
             inner: <span class="self">self</span>,
             marker: <span class="self">self</span>.value.mark(),
@@ -254,7 +252,7 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>modify&lt;R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, func: <span class="kw">impl </span>FnOnce(<span class="kw-2">&amp;</span>WatchGuard&lt;T&gt;) -&gt; R) -&gt; R {
+    </span><span class="kw">pub fn </span>modify&lt;R&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, func: <span class="kw">impl </span>FnOnce(<span class="kw-2">&amp;</span>WatchGuard&lt;<span class="lifetime">'_</span>, T&gt;) -&gt; R) -&gt; R {
         (func)(<span class="kw-2">&amp;</span>WatchGuard {
             inner: <span class="self">self</span>,
             marker: <span class="self">self</span>.value.mark(),
@@ -302,12 +300,18 @@
     <span class="kw">fn </span>schema_name() -&gt; String {
         &lt;T&gt;::schema_name()
     }
-    <span class="kw">fn </span>json_schema(gen: <span class="kw-2">&amp;mut </span>schemars::gen::SchemaGenerator) -&gt; schemars::schema::Schema {
-        &lt;T&gt;::json_schema(gen)
+    <span class="kw">fn </span>json_schema(r#gen: <span class="kw-2">&amp;mut </span>schemars::r#gen::SchemaGenerator) -&gt; schemars::schema::Schema {
+        &lt;T&gt;::json_schema(r#gen)
     }
 
     <span class="kw">fn </span>is_referenceable() -&gt; bool {
         &lt;T&gt;::is_referenceable()
+    }
+}
+
+<span class="kw">impl</span>&lt;T: fmt::Debug&gt; fmt::Debug <span class="kw">for </span>Watch&lt;T&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">'_</span>&gt;) -&gt; fmt::Result {
+        <span class="macro">write!</span>(f, <span class="string">"{:?}"</span>, <span class="self">self</span>.value)
     }
 }
 
